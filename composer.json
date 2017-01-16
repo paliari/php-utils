@@ -11,6 +11,9 @@
     "autoload": {
         "psr-4": {
             "Paliari\\Utils\\": "src"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     }
 }
