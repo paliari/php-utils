@@ -1,0 +1,16 @@
+{
+    "name": "paliari/php-utils",
+    "description": "PHP utils",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcos Paliari",
+            "email": "marcos@paliari.com.br"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Paliari\\Utils\\": "src"
+        }
+    }
+}
