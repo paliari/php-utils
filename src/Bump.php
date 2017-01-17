@@ -16,12 +16,6 @@ class Bump
     protected $prerelease = 0;
 
     /**
-     * Sem parametro executa "bump patch"
-     * Pode passar a version "gulp bump --version 1.1.0"
-     * Ou passar o tipo desejado: "gulp bump --type minor"
-     * Opcoes permitidas: major|minor|patch|prerelease
-     *
-     *
      * @param string $composer_file
      */
     public function __construct($composer_file = '')
@@ -31,6 +25,10 @@ class Bump
     }
 
     /**
+     * Sem parametro executa "bin/bump -v patch"
+     * Pode passar a version "bin/bump --version 1.1.0"
+     * Ou passar o tipo desejado: "bin/bump --version minor"
+     *
      * MAJOR ("major") version when you make incompatible API changes
      * MINOR ("minor") version when you add functionality in a backwards-compatible manner
      * PATCH ("patch") version when you make backwards-compatible bug fixes.
@@ -60,6 +58,13 @@ class Bump
         $this->write();
 
         return $this->content['version'];
+    }
+
+    public function git()
+    {
+        echo shell_exec("git add $this->file");
+        echo shell_exec("git commit -m 'Bumps package version'");
+        echo shell_exec("git tag $this->content[version]");
     }
 
     protected function major()
