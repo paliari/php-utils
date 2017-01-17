@@ -7,6 +7,16 @@
 #### Usage
 
 ##### Bump
+
+Increment version of composer.json.
+
+   Params:
+   
+   - **--git** or **-g** Commit composer.json bumped and create the git tag
+   - **--version** or **-v** Version type <path | minor | major | prerelase> or custom version <1.0.0-pre1>. Defalt is path
+   - **--file** or **-f** Composer json file <composer.json>. Default is composer.json
+   
+   
 	$ vendor/bin/bump -v <path|minor|major|prerelase|custom_version> -f <custom_composer.json> -g
 	Or
 	$ vendor/bin/bump --version <version> --file <custom_composer.json> --git
@@ -16,6 +26,7 @@
 	$ vendor/bin/bump --version major -f composer_custom.json -g
 
 ##### Array
+Array facades.
 
 ```php
     $a1 = ['a' => 1];
