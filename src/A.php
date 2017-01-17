@@ -4,6 +4,14 @@ namespace Paliari\Utils;
 class A
 {
 
+    /**
+     * Merge arrays.
+     *
+     * @param array $a1
+     * @param array $a2
+     *
+     * @return array
+     */
     public static function merge($a1, $a2)
     {
         $a1 = (array)$a1;
@@ -17,6 +25,16 @@ class A
         return array_merge($a1, $a2);
     }
 
+    /**
+     * Get deep key separate of '.'.
+     * example: A::deepKey(['b' => ['b1' => 2]], 'b.b1')
+     * return: 2
+     *
+     * @param array $content
+     * @param       $key
+     *
+     * @return array|mixed|null
+     */
     public static function deepKey(array $content, $key)
     {
         $keys = explode('.', $key);
@@ -27,6 +45,15 @@ class A
         return $content;
     }
 
+    /**
+     * Convert array for simple array,
+     * example: A::flatten(['a' => 1, 2, ['b' => 'b3', 'c' => ['c1', 'c2']]])
+     * return: [1, 2, 'b3', 'c1', 'c2']
+     *
+     * @param array $array
+     *
+     * @return array
+     */
     public static function flatten(array $array)
     {
         $flattened_array = [];
