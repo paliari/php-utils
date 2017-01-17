@@ -28,7 +28,7 @@
     var_export($val);
     // export to 2;
 
-    $flatten = \Paliari\Utils\A::flatten($3);
+    $flatten = \Paliari\Utils\A::flatten($a3);
     var_export($flatten);
     // export to [1, 2];
 
