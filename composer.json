@@ -1,5 +1,6 @@
 {
     "name": "paliari/php-utils",
+    "version": "1.0.0",
     "description": "PHP utils",
     "license": "MIT",
     "authors": [
@@ -15,8 +16,6 @@
         "files": [
             "src/functions.php"
         ]
-    },
-    "require": {
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7"
