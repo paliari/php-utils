@@ -1,7 +1,12 @@
 <?php
 use Paliari\Utils\Bump;
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+$autoloadFiles = [__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php'];
+foreach ($autoloadFiles as $autoloadFile) {
+    if (file_exists($autoloadFile)) {
+        require_once "$autoloadFile";
+    }
+}
 $options = getopt('f:v:g', ['file:', 'version:', 'git']);
 $file    = @$options['file'] ?: @$options['f'];
 $version = @$options['version'] ?: @$options['v'];
