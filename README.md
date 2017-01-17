@@ -13,17 +13,15 @@ Increment version of composer.json.
 Params:
 
 - **--git** or **-g** Commit composer.json bumped and create the git tag
-- **--version** or **-v** Version type <path | minor | major | prerelase> or custom version <1.0.0-pre1>. Defalt is path
+- **--version** or **-v** Version type <major | minor | patch | prerelase> or custom version <1.0.0-pre1>. Default is patch
 - **--file** or **-f** Composer json file <composer.json>. Default is composer.json
    
    
-		$ vendor/bin/bump -v <path|minor|major|prerelase|custom_version> -f <custom_composer.json> -g
+		$ vendor/bin/bump -v major -f custom_composer.json -g
 		Or
-		$ vendor/bin/bump --version <version> --file <custom_composer.json> --git
+		$ vendor/bin/bump --version 1.0.0 --file custom_composer.json --git
 		Or
 		$ vendor/bin/bump -v minor --git
-		Or
-		$ vendor/bin/bump --version major -f composer_custom.json -g
 
 ##### Array
 Array facades.
