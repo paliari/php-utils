@@ -64,7 +64,7 @@ class Bump
     {
         echo shell_exec("git add $this->file");
         echo shell_exec("git commit -m 'Bumps package version'");
-        echo shell_exec("git tag $this->content[version]");
+        echo shell_exec('git tag ' . $this->content['version']);
     }
 
     protected function major()
@@ -111,7 +111,7 @@ class Bump
     {
         $this->content['version'] = $this->prepareVersion();
 
-        return file_put_contents($this->file, json_encode($this->content, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+        return file_put_contents($this->file, json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     }
 
     protected function prepareVersion()
