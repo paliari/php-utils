@@ -54,6 +54,22 @@ Array facades.
     
 ```
 
+##### Logger
+Write log to file
+
+```php
+    
+    // config custom file log, default is realpath(sys_get_temp_dir()) . '/php-util.log'
+    $file = __DIR__.'/tmp/logs/test.log';
+    \Paliari\Utils\Logger::file($file); 
+    
+    Methods avaliables: "critical, error, warning, notice, info, debug".
+    
+    // info 
+    \Paliari\Utils\Logger::info('Yor custom message.');
+    
+```
+
 
 ### Authors
 
