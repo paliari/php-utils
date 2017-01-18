@@ -63,10 +63,25 @@ Write log to file
     $file = __DIR__.'/tmp/logs/test.log';
     \Paliari\Utils\Logger::file($file); 
     
-    Methods avaliables: "critical, error, warning, notice, info, debug".
+    //Methods avaliables: "critical, error, warning, notice, info, debug".
     
     // info 
     \Paliari\Utils\Logger::info('Yor custom message.');
+    
+```
+
+##### CatchFatalError
+CatchFatalError
+
+```php
+    
+    // Init
+    \Paliari\Utils\CatchFatalError::init();
+    // Or
+    \Paliari\Utils\CatchFatalError::init(function ($e) {
+        // ... custom handler actions, ex: send mail, save custom log...
+        return $e['message'];
+    });
     
 ```
 
