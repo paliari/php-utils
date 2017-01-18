@@ -121,7 +121,7 @@ class Logger
      */
     public static function critical($message)
     {
-        return static::write(static::prepare($message, static::CRITICAL));
+        return static::log($message, static::CRITICAL);
     }
 
     /**
@@ -131,7 +131,7 @@ class Logger
      */
     public static function error($message)
     {
-        return static::write(static::prepare($message, static::ERROR));
+        return static::log($message, static::ERROR);
     }
 
     /**
@@ -141,7 +141,7 @@ class Logger
      */
     public static function warning($message)
     {
-        return static::write(static::prepare($message, static::WARNING));
+        return static::log($message, static::WARNING);
     }
 
     /**
@@ -151,7 +151,7 @@ class Logger
      */
     public static function notice($message)
     {
-        return static::write(static::prepare($message, static::NOTICE));
+        return static::log($message, static::NOTICE);
     }
 
     /**
@@ -161,7 +161,7 @@ class Logger
      */
     public static function info($message)
     {
-        return static::write(static::prepare($message, static::INFO));
+        return static::log($message, static::INFO);
     }
 
     /**
@@ -171,7 +171,7 @@ class Logger
      */
     public static function debug($message)
     {
-        return static::write(static::prepare($message, static::DEBUG));
+        return static::log($message, static::DEBUG);
     }
 
 }
