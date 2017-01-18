@@ -30,14 +30,21 @@ class CatchFatalError
      */
     protected static function fatalErrorHandler($e)
     {
+        $ret = static::defaultErrorHandler($e);
         if ($handler = static::$handler) {
-            return $handler($e);
+            $ret = $handler($e) ?: $ret;
         }
-        header('Content-Type: application/json');
-        http_response_code(500);
         Logger::critical(static::formatError($e));
 
-        return json_encode(['error' => 'Erro interno!']);
+        return $ret;
+    }
+
+    public static function defaultErrorHandler($e)
+    {
+        header('Content-Type: application/json');
+        http_response_code(500);
+
+        return json_encode(['error' => $e, 'message' => 'Fatal Error!']);
     }
 
     protected static function formatError($e)
