@@ -2,7 +2,8 @@
 namespace Paliari\Utils;
 
 use RuntimeException,
-    LogicException;
+    LogicException,
+    Exception;
 
 class Logger
 {
@@ -27,7 +28,7 @@ class Logger
         if (null === static::$machine) {
             static::$machine = (isset($_SERVER['SERVER_ADDR'])) ? $_SERVER['SERVER_ADDR'] : 'localhost';
         }
-        $data = [date(static::$date_format), static::$machine, $level, $message];
+        $data = [date(static::$date_format), static::$machine, $level, static::convertMessage($message)];
 
         return vsprintf(static::$format, $data);
     }
@@ -35,7 +36,7 @@ class Logger
     /**
      * Write a raw message to the log.
      *
-     * @param array $content
+     * @param string $content
      *
      * @return bool
      */
@@ -52,6 +53,37 @@ class Logger
         flock($f, LOCK_UN);
 
         return fclose($f);
+    }
+
+    /**
+     * @param mixed $message
+     *
+     * @return string
+     */
+    protected static function convertMessage($message)
+    {
+        $msg = '';
+        if ($message instanceof Exception) {
+            $msg .= "Error:\n$message\n";
+            $msg .= str_repeat('-', 50);
+        } elseif (static::isNoPrint($message)) {
+            $msg .= 'Object error:' . PHP_EOL . var_export($message, true) . PHP_EOL;
+            $msg .= str_repeat('-', 50);
+        } else {
+            $msg = $message;
+        }
+
+        return $msg;
+    }
+
+    /**
+     * @param mixed $v
+     *
+     * @return bool
+     */
+    protected static function isNoPrint($v)
+    {
+        return ((is_object($v) && !method_exists($v, '__toString')) || is_array($v) || is_bool($v) || is_null($v));
     }
 
     /**
@@ -72,10 +104,10 @@ class Logger
     }
 
     /**
-     * @param string $message
+     * @param mixed  $message
      * @param string $level
      *
-     * @return mixed
+     * @return bool
      */
     public static function log($message, $level = self::ERROR)
     {
@@ -83,9 +115,9 @@ class Logger
     }
 
     /**
-     * @param string $message
+     * @param mixed $message
      *
-     * @return mixed
+     * @return bool
      */
     public static function critical($message)
     {
@@ -93,9 +125,9 @@ class Logger
     }
 
     /**
-     * @param string $message
+     * @param mixed $message
      *
-     * @return mixed
+     * @return bool
      */
     public static function error($message)
     {
@@ -103,9 +135,9 @@ class Logger
     }
 
     /**
-     * @param string $message
+     * @param mixed $message
      *
-     * @return mixed
+     * @return bool
      */
     public static function warning($message)
     {
@@ -113,9 +145,9 @@ class Logger
     }
 
     /**
-     * @param string $message
+     * @param mixed $message
      *
-     * @return mixed
+     * @return bool
      */
     public static function notice($message)
     {
@@ -123,9 +155,9 @@ class Logger
     }
 
     /**
-     * @param string $message
+     * @param mixed $message
      *
-     * @return mixed
+     * @return bool
      */
     public static function info($message)
     {
@@ -133,9 +165,9 @@ class Logger
     }
 
     /**
-     * @param string $message
+     * @param mixed $message
      *
-     * @return mixed
+     * @return bool
      */
     public static function debug($message)
     {
