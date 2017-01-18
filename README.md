@@ -71,7 +71,6 @@ Write log to file
 ```
 
 ##### CatchFatalError
-CatchFatalError
 
 ```php
     
