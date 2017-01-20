@@ -84,6 +84,45 @@ Write log to file
     
 ```
 
+##### Url
+Facade of url parse.
+
+```php
+    
+    // Example
+    $url = 'https://domain.com/home/?p=1&q[a]=11&q[b]=22#/home';
+    $u = \Paliari\Utils\Url::parse($url);
+    var_export($u);
+    // expected
+    /*
+    Paliari\Utils\Url::__set_state(array(
+       'scheme' => 'https',
+       'host' => 'domain.com',
+       'port' => NULL,
+       'user' => NULL,
+       'pass' => NULL,
+       'path' => '/home/',
+       'query' => 'p=1&q[a]=11&q[b]=22',
+       'fragment' => '/home',
+       'url' => 'https://domain.com/home/?p=1&q[a]=11&q[b]=22#/home',
+    ))
+    */
+
+    // Method queryToArray convert query string to array.
+    var_export($u->queryToArray());
+    // expected
+    /*
+    array (
+      'p' => '1',
+      'q' => 
+      array (
+        'a' => '11',
+        'b' => '22',
+      ),
+    )
+    */
+    
+```
 
 ### Authors
 
