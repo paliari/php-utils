@@ -38,7 +38,9 @@ class Csv
             array_unshift($rows, array_keys($rows[0]));
         }
         foreach ($rows as $row) {
-            $this->put($row);
+            if (false !== $this->put($row)) {
+                $count++;
+            }
         }
 
         return $count;
