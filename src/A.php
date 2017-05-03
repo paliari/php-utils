@@ -83,4 +83,16 @@ class A
         return array_combine($keys, $values);
     }
 
+    /**
+     * @param array  $array
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public static function get($array, $key, $default = null)
+    {
+        return isset($array[$key]) ? $array[$key] : $default;
+    }
+
 }
