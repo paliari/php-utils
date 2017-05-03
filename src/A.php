@@ -67,6 +67,7 @@ class A
     /**
      * Creates an array by using one array for keys and another for its values
      * @link http://php.net/manual/en/function.array-combine.php
+     *
      * @param array $keys <p>
      * Array of keys to be used. Illegal values for key will be
      * converted to string.
@@ -74,6 +75,7 @@ class A
      * @param array $values <p>
      * Array of values to be used
      * </p>
+     *
      * @return array the combined array, false if the number of elements
      * for each array isn't equal or if the arrays are empty.
      * @since 5.0
