@@ -1,4 +1,5 @@
 <?php
+
 namespace Paliari\Utils;
 
 class A
@@ -95,6 +96,23 @@ class A
     public static function get($array, $key, $default = null)
     {
         return isset($array[$key]) ? $array[$key] : $default;
+    }
+
+    /**
+     * Set deep key separate of '.'.
+     *
+     * @param array  $array
+     * @param string $keys
+     * @param mixed  $value
+     */
+    public static function setDeepKey(array &$array, $keys, $value)
+    {
+        $keys    = explode('.', $keys);
+        $current = &$array;
+        foreach ($keys as $key) {
+            $current = &$current[$key];
+        }
+        $current = $value;
     }
 
 }
