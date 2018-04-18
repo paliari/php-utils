@@ -70,10 +70,10 @@ class Csv
         $res  = $this->open($file_name, 'r');
         $line = 1;
         if ($first_row_column_names) {
-            $names = fgetcsv($res, $length);
+            $names = fgetcsv($res, $length, $this->delimiter, $this->enclosure, $this->escape_char);
             $line++;
         }
-        while ($row = fgetcsv($res, $length)) {
+        while ($row = fgetcsv($res, $length, $this->delimiter, $this->enclosure, $this->escape_char)) {
             $rows[] = $first_row_column_names ? $this->combine($names, $row, $line) : $row;
             $line++;
         }
