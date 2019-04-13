@@ -1,4 +1,5 @@
 <?php
+
 namespace Paliari\Utils;
 
 use RuntimeException,
@@ -19,18 +20,18 @@ class Logger
 
     public static $date_format = 'Y-m-d H:i:s';
 
-    public static $machine = null;
-
     protected static $file = '';
 
     protected static function prepare($message, $level)
     {
-        if (null === static::$machine) {
-            static::$machine = (isset($_SERVER['SERVER_ADDR'])) ? $_SERVER['SERVER_ADDR'] : 'localhost';
-        }
-        $data = [date(static::$date_format), static::$machine, $level, static::convertMessage($message)];
+        $data = [date(static::$date_format), static::machine(), $level, static::convertMessage($message)];
 
         return vsprintf(static::$format, $data);
+    }
+
+    protected static function machine()
+    {
+        return A::get($_SERVER, 'SERVER_ADDR', 'localhost');
     }
 
     /**
@@ -66,7 +67,7 @@ class Logger
         if ($message instanceof Exception) {
             $msg .= "Error:\n$message\n";
             $msg .= str_repeat('-', 50);
-        } elseif (static::isNoPrint($message)) {
+        } else if (static::isNoPrint($message)) {
             $msg .= 'Object error:' . PHP_EOL . var_export($message, true) . PHP_EOL;
             $msg .= str_repeat('-', 50);
         } else {
