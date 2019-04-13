@@ -22,8 +22,13 @@ class Logger
 
     protected static $file = '';
 
+    protected static $scope;
+
     protected static function prepare($message, $level)
     {
+        if ($scope = static::scope()) {
+            $level .= ".$scope";
+        }
         $data = [date(static::$date_format), static::machine(), $level, static::convertMessage($message)];
 
         return vsprintf(static::$format, $data);
@@ -85,6 +90,20 @@ class Logger
     protected static function isNoPrint($v)
     {
         return ((is_object($v) && !method_exists($v, '__toString')) || is_array($v) || is_bool($v) || is_null($v));
+    }
+
+    /**
+     * @param string $scope
+     *
+     * @return string
+     */
+    public static function scope($scope = null)
+    {
+        if (null !== $scope) {
+            static::$scope = $scope;
+        }
+
+        return static::$scope;
     }
 
     /**
