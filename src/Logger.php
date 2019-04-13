@@ -24,19 +24,41 @@ class Logger
 
     protected static $scope;
 
-    protected static function prepare($message, $level)
-    {
-        if ($scope = static::scope()) {
-            $level .= ".$scope";
-        }
-        $data = [date(static::$date_format), static::machine(), $level, static::convertMessage($message)];
-
-        return vsprintf(static::$format, $data);
-    }
+    protected static $write_custom;
 
     protected static function machine()
     {
         return A::get($_SERVER, 'SERVER_ADDR', 'localhost');
+    }
+
+    /**
+     * Set custom write.
+     * Should receive the params: ($machine, $level, $message, $scope)
+     *
+     * @param callable $callable
+     */
+    public static function setWriteCustom($callable)
+    {
+        static::$write_custom = $callable;
+    }
+
+    protected static function write($machine, $level, $message, $scope)
+    {
+        if (static::$write_custom) {
+            return call_user_func(static::$write_custom, $machine, $level, $message, $scope);
+        }
+
+        return static::writeFile(static::prepare($machine, $level, $message, $scope));
+    }
+
+    protected static function prepare($machine, $level, $message, $scope)
+    {
+        if ($scope) {
+            $level .= ".$scope";
+        }
+        $data = [date(static::$date_format), $machine, $level, $message];
+
+        return vsprintf(static::$format, $data);
     }
 
     /**
@@ -46,7 +68,7 @@ class Logger
      *
      * @return bool
      */
-    protected static function write($content)
+    protected static function writeFile($content)
     {
         $f = fopen(static::file(), 'a+');
         if (!$f) {
@@ -131,7 +153,7 @@ class Logger
      */
     public static function log($message, $level = self::ERROR)
     {
-        return static::write(static::prepare($message, $level));
+        return static::write(static::machine(), $level, static::convertMessage($message), static::scope());
     }
 
     /**
