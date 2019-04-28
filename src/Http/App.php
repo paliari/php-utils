@@ -27,10 +27,14 @@ class App
      * @param string   $method HTTP method: GET, POST, PUT, PATCH, DELETE, OPTIONS, HEADER
      * @param string   $route  eg: /users/{id}
      * @param callable $callable
+     *
+     * @return $this
      */
     public function map($method, $route, $callable)
     {
         $this->routes[strtoupper($method)][$this->routeToPattern($route)] = $callable;
+
+        return $this;
     }
 
     protected function routeToPattern($route)
