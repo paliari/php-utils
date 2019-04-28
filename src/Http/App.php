@@ -37,6 +37,71 @@ class App
         return $this;
     }
 
+    /**
+     * @param string   $route
+     * @param callable $callable
+     *
+     * @return $this
+     */
+    public function get($route, $callable)
+    {
+        $this->map('GET', $route, $callable);
+
+        return $this;
+    }
+
+    /**
+     * @param string   $route
+     * @param callable $callable
+     *
+     * @return $this
+     */
+    public function post($route, $callable)
+    {
+        $this->map('POST', $route, $callable);
+
+        return $this;
+    }
+
+    /**
+     * @param string   $route
+     * @param callable $callable
+     *
+     * @return $this
+     */
+    public function put($route, $callable)
+    {
+        $this->map('PUT', $route, $callable);
+
+        return $this;
+    }
+
+    /**
+     * @param string   $route
+     * @param callable $callable
+     *
+     * @return $this
+     */
+    public function patch($route, $callable)
+    {
+        $this->map('PATCH', $route, $callable);
+
+        return $this;
+    }
+
+    /**
+     * @param string   $route
+     * @param callable $callable
+     *
+     * @return $this
+     */
+    public function delete($route, $callable)
+    {
+        $this->map('DELETE', $route, $callable);
+
+        return $this;
+    }
+
     protected function routeToPattern($route)
     {
         $replace = '([\w\-_]+)';
