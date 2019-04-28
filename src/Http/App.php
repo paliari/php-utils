@@ -52,7 +52,7 @@ class App
     public function run()
     {
         try {
-            $this->invoke();
+            $this->process();
         } catch (Exception $e) {
             if (200 == $this->response->code) {
                 $this->response->code = 409;
@@ -62,19 +62,27 @@ class App
         echo $this->response;
     }
 
-    protected function invoke()
+    protected function process()
     {
         $patterns = A::get($this->routes, $this->request->getMethod(), []);
         foreach ($patterns as $pattern => $callable) {
             if (preg_match($pattern, $this->request->getPath(), $p)) {
-                $params = array_slice($p, 1);
-                $args   = array_merge([$this->request, $this->response], $params);
-
-                return call_user_func_array($callable, $args);
+                return $this->invoke($callable, array_slice($p, 1));
             }
         }
         $this->response->code = 404;
         throw new DomainException('Page not found!');
+    }
+
+    protected function invoke($callable, $params)
+    {
+        if (is_string($callable) && preg_match('/\w+\:\w+/', $callable)) {
+            list($class, $method) = explode(':', $callable);
+            $callable = [new $class(), $method];
+        }
+        $args = array_merge([$this->request, $this->response], $params);
+
+        return call_user_func_array($callable, $args);
     }
 
     protected function toJson($content)
