@@ -116,4 +116,21 @@ class A
         $current = $value;
     }
 
+    /**
+     * Returns array with only the allowed attributes
+     *
+     * @param array $array
+     * @param array $allowed_keys
+     *
+     * @return array
+     */
+    public static function sanitize($array, $allowed_keys)
+    {
+        if ($allowed_keys) {
+            return array_intersect_key($array, array_flip($allowed_keys));
+        }
+
+        return $array;
+    }
+
 }
