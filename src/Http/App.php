@@ -122,7 +122,7 @@ class App
             if (200 == $this->response->code) {
                 $this->response->code = 409;
             }
-            $this->response->output = $this->toJson(['error' => $e->getMessage()]);
+            $this->response->body = $this->toJson(['error' => $e->getMessage()]);
         }
         echo $this->response;
     }

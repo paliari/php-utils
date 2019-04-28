@@ -5,8 +5,8 @@ namespace Paliari\Utils\Http;
 class Response
 {
 
-    public $output = null;
-    public $code   = 200;
+    public $body = null;
+    public $code = 200;
 
     protected $_headers = ['Content-Type' => 'application/json;charset=utf-8'];
 
@@ -39,7 +39,7 @@ class Response
         $this->setHeader('X-Time', $this->xTime() . 'ms');
         $this->sendHeaders();
 
-        return $this->output;
+        return $this->body;
     }
 
     public function __toString()
