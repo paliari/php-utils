@@ -24,8 +24,25 @@ class App
     }
 
     /**
+     * Add middleware
+     *
+     * This method prepends new middleware to the application middleware stack.
+     *
+     * @param callable $callable Any callable that accepts three arguments:
+     *                           1. A Request object
+     *                           2. A Response object
+     *                           3. A "next" middleware callable
+     *
+     * @return $this
+     */
+    public function add($callable, $route = '/')
+    {
+        return $this->addMiddleware($callable, $this->routeToPattern($route, ''));
+    }
+
+    /**
      * @param string   $method HTTP method: GET, POST, PUT, PATCH, DELETE, OPTIONS, HEADER
-     * @param string   $route  eg: /users/{id}
+     * @param string   $route eg: /users/{id}
      * @param callable $callable
      *
      * @return $this
@@ -102,7 +119,7 @@ class App
         return $this;
     }
 
-    protected function routeToPattern($route)
+    protected function routeToPattern($route, $end = '$')
     {
         $replace = '([\w\-_]+)';
         preg_match_all('/{[\w]+}+/', $route, $a);
@@ -111,13 +128,13 @@ class App
         }
         $route = str_replace('/', '\/', $route);
 
-        return '!^' . $route . '$!';
+        return '!^' . $route . $end . '!';
     }
 
     public function run()
     {
         try {
-            $this->process();
+            $this->callMiddleware($this->request, $this->response);
         } catch (Exception $e) {
             if (200 == $this->response->code) {
                 $this->response->code = 409;
@@ -127,15 +144,15 @@ class App
         echo $this->response;
     }
 
-    protected function process()
+    protected function runRoute(Request $request, Response $response)
     {
-        $patterns = A::get($this->routes, $this->request->getMethod(), []);
+        $patterns = A::get($this->routes, $request->getMethod(), []);
         foreach ($patterns as $pattern => $callable) {
-            if (preg_match($pattern, $this->request->getPath(), $p)) {
+            if (preg_match($pattern, $request->getPath(), $p)) {
                 return $this->invoke($callable, array_slice($p, 1));
             }
         }
-        $this->response->code = 404;
+        $response->code = 404;
         throw new DomainException('Page not found!');
     }
 
@@ -153,6 +170,52 @@ class App
     protected function toJson($content)
     {
         return json_encode($content);
+    }
+
+    protected $_middleware = [];
+
+    protected function middleware($pattern)
+    {
+        return A::get($this->_middleware, $pattern, $this);
+    }
+
+    protected function addMiddleware(callable $callable, $pattern)
+    {
+        $next                        = $this->middleware($pattern);
+        $this->_middleware[$pattern] = function (Request $request, Response $response) use ($callable, $next) {
+            $result = call_user_func($callable, $request, $response, $next);
+            if (!$result instanceof Response) {
+                throw new DomainException('Middleware must return instance of Response!');
+            }
+
+            return $result;
+        };
+
+        return $this;
+    }
+
+    /**
+     * @param  Request  $request A request object
+     * @param  Response $response A response object
+     *
+     * @return Response
+     */
+    protected function callMiddleware(Request $request, Response $response)
+    {
+        foreach ($this->_middleware as $pattern => $callable) {
+            if (preg_match($pattern, $request->getPath())) {
+                $start = $this->middleware($pattern);
+
+                return $start($request, $response);
+            }
+        }
+
+        return $this->runRoute($request, $response);
+    }
+
+    public function __invoke(Request $request, Response $response)
+    {
+        return $this->runRoute($request, $response);
     }
 
 }
