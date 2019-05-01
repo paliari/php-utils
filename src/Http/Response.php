@@ -27,9 +27,10 @@ class Response
         $this->setHeader('Content-Type', 'text/html');
     }
 
-    public function redirect($url)
+    public function redirect($url, $status_code = 302)
     {
         $this->_headers = [];
+        $this->code     = $status_code;
         $this->setHeader('Location', $url);
     }
 
