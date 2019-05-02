@@ -73,7 +73,7 @@ class Request
      */
     public function getHeader($key)
     {
-        return A::get($this->getHeaders(), $key);
+        return A::get($this->getHeaders(), strtolower($key));
     }
 
     /**
@@ -82,13 +82,9 @@ class Request
     public function getHeaders()
     {
         if (!$this->_headers) {
-            if (function_exists('getallheaders')) {
-                $this->_headers = getallheaders();
-            } else {
-                foreach ($_SERVER as $k => $v) {
-                    if ('HTTP_' === substr($k, 0, 5)) {
-                        $this->_headers[$k] = $v;
-                    }
+            foreach ($_SERVER as $k => $v) {
+                if ('HTTP_' === substr($k, 0, 5)) {
+                    $this->_headers[strtolower($k)] = $v;
                 }
             }
         }
