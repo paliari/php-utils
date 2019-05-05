@@ -58,7 +58,7 @@ class Request
 
     public function userAgent()
     {
-        return A::get($_SERVER, 'HTTP_USER_AGENT', '');
+        return $this->getHeader('User-Agent');
     }
 
     public function ip()
@@ -78,7 +78,7 @@ class Request
 
     protected function prepareHeaderKey($key)
     {
-        return str_replace('-', '_', strtolower($key));
+        return str_replace(' ', '-', ucwords(strtr(strtolower($key), '_-', '  ')));
     }
 
     /**
@@ -87,7 +87,7 @@ class Request
     public function getHeaders()
     {
         if (!$this->_headers) {
-            foreach ($this->requestHeaders() as $k => $v) {
+            foreach ($this->httpHeaders() as $k => $v) {
                 $this->_headers[$this->prepareHeaderKey($k)] = $v;
             }
         }
@@ -95,13 +95,20 @@ class Request
         return $this->_headers;
     }
 
-    protected function requestHeaders()
+    protected function httpHeaders()
     {
         $headers = function_exists('apache_request_headers') ? apache_request_headers() : [];
         if (!$headers) {
+            $prefix = 'HTTP_';
             foreach ($_SERVER as $k => $v) {
-                if ('HTTP_' === substr($k, 0, 5)) {
-                    $headers[substr($k, 5)] = $v;
+                if (0 === strpos($k, $prefix)) {
+                    $k                                    = str_replace($prefix, '', $k);
+                    $headers[$this->prepareHeaderKey($k)] = $v;
+                }
+            }
+            foreach (['CONTENT_TYPE', 'CONTENT_LENGTH', 'Authorization'] as $key) {
+                if ($value = A::get($_SERVER, $key)) {
+                    $headers[$this->prepareHeaderKey($key)] = $value;
                 }
             }
         }
