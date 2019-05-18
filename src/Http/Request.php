@@ -7,6 +7,20 @@ use Paliari\Utils\A;
 class Request
 {
 
+    protected static $_instance;
+
+    /**
+     * @return static
+     */
+    public static function i()
+    {
+        if (!isset(static::$_instance)) {
+            static::$_instance = new static();
+        }
+
+        return static::$_instance;
+    }
+
     protected $_payload;
 
     protected $_headers = [];
