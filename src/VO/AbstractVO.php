@@ -29,6 +29,16 @@ abstract class AbstractVO implements ArrayAccess, Countable
         return $array;
     }
 
+    public function toJson()
+    {
+        return json_encode($this->toArray());
+    }
+
+    public function __toString()
+    {
+        return $this->toJson();
+    }
+
     public function offsetSet($offset, $value)
     {
         if (null === $offset) {
@@ -55,11 +65,6 @@ abstract class AbstractVO implements ArrayAccess, Countable
     public function count()
     {
         return count($this->toArray());
-    }
-
-    public function __toString()
-    {
-        return json_encode($this->toArray());
     }
 
     protected function get($name)
