@@ -11,3 +11,11 @@ function w($str, $delimiter = ' ')
 {
     return explode($delimiter, $str);
 }
+
+/**
+ * @return int
+ */
+function microSeconds()
+{
+    return (int)(microtime(true) * 1000);
+}
