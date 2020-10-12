@@ -2,11 +2,10 @@
 
 namespace Paliari\Utils\VO;
 
-use ArrayAccess, Countable;
+use ArrayAccess, Countable, JsonSerializable;
 
-abstract class AbstractVO implements ArrayAccess, Countable
+abstract class AbstractVO implements ArrayAccess, Countable, JsonSerializable
 {
-
     public function __construct($attributes = [])
     {
         foreach ($attributes as $k => $v) {
@@ -67,6 +66,11 @@ abstract class AbstractVO implements ArrayAccess, Countable
         return count($this->toArray());
     }
 
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
     protected function get($name)
     {
         return $this->$name;
@@ -76,5 +80,4 @@ abstract class AbstractVO implements ArrayAccess, Countable
     {
         $this->$key = $value;
     }
-
 }
