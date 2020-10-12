@@ -4,7 +4,6 @@ namespace Paliari\Utils;
 
 abstract class AbstractSingleton
 {
-
     protected static $_instances = [];
 
     /**
@@ -19,5 +18,4 @@ abstract class AbstractSingleton
 
         return static::$_instances[$className];
     }
-
 }

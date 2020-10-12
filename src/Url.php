@@ -3,7 +3,6 @@ namespace Paliari\Utils;
 
 class Url
 {
-
     /**
      * http, https, file...
      *
@@ -90,5 +89,4 @@ class Url
 
         return $array;
     }
-
 }

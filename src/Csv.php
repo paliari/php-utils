@@ -9,7 +9,6 @@ use Exception;
  */
 class Csv
 {
-
     protected $delimiter = ",", $enclosure = '"', $escape_char = "\\";
 
     protected $resource;
@@ -121,5 +120,4 @@ class Csv
     {
         $this->close();
     }
-
 }
