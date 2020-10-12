@@ -8,7 +8,6 @@ use RuntimeException,
 
 class Logger
 {
-
     const CRITICAL = 'CRITICAL';
     const ERROR    = 'ERROR';
     const WARNING  = 'WARNING';
@@ -215,5 +214,4 @@ class Logger
     {
         return static::log($message, static::DEBUG);
     }
-
 }

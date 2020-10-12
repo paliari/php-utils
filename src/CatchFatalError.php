@@ -3,7 +3,6 @@ namespace Paliari\Utils;
 
 class CatchFatalError
 {
-
     /**
      * @var callable
      */
@@ -57,5 +56,4 @@ class CatchFatalError
 
         return $str;
     }
-
 }

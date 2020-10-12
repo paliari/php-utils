@@ -4,7 +4,6 @@ namespace Paliari\Utils;
 
 class A
 {
-
     /**
      * Merge arrays.
      *
@@ -132,5 +131,4 @@ class A
 
         return $array;
     }
-
 }

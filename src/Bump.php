@@ -5,7 +5,6 @@ use Exception;
 
 class Bump
 {
-
     protected $format  = '/(\d+)\.(\d+)\.(\d+)-?(\w{0,})/';
     protected $file    = '';
     protected $content = [];
@@ -123,5 +122,4 @@ class Bump
 
         return $version;
     }
-
 }
