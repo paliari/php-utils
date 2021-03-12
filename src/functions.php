@@ -1,6 +1,8 @@
 <?php
 /**
  * Transforma uma string em array.
+ * 
+ * @deprecated Usar array nativo do php
  *
  * @param string $str
  * @param string $delimiter
