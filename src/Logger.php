@@ -2,18 +2,16 @@
 
 namespace Paliari\Utils;
 
-use RuntimeException,
-    LogicException,
-    Exception;
+use Exception;
 
 class Logger
 {
     const CRITICAL = 'CRITICAL';
-    const ERROR    = 'ERROR';
-    const WARNING  = 'WARNING';
-    const NOTICE   = 'NOTICE';
-    const INFO     = 'INFO';
-    const DEBUG    = 'DEBUG';
+    const ERROR = 'ERROR';
+    const WARNING = 'WARNING';
+    const NOTICE = 'NOTICE';
+    const INFO = 'INFO';
+    const DEBUG = 'DEBUG';
 
     public static $format = "%s - %s - %s - %s\n";
 
@@ -69,17 +67,9 @@ class Logger
      */
     protected static function writeFile($content)
     {
-        $f = fopen(static::file(), 'a+');
-        if (!$f) {
-            throw new LogicException('Could not open file for writing!');
-        }
-        if (!flock($f, LOCK_EX)) {
-            throw new RuntimeException('Could not lock file!');
-        }
-        fwrite($f, $content);
-        flock($f, LOCK_UN);
+        $stdout = fopen('php://stdout', 'w');
 
-        return fclose($f);
+        return fwrite($stdout, $content);
     }
 
     /**
@@ -137,15 +127,12 @@ class Logger
         if (null !== $file) {
             static::$file = $file;
         }
-        if (!static::$file) {
-            static::$file = realpath(sys_get_temp_dir()) . DIRECTORY_SEPARATOR . 'php-util.log';
-        }
 
         return static::$file;
     }
 
     /**
-     * @param mixed  $message
+     * @param mixed $message
      * @param string $level
      *
      * @return bool
