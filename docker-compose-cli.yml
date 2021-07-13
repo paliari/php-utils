@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  cli:
+    image: paliari/apache-php56-oci8:1.0.3-dev
+    volumes:
+      - .:/var/www/html:cached
+      - ~/.ssh:/root/.ssh
+    command: bash
