@@ -20,7 +20,7 @@ class App
             $GLOBALS['X-Time'] = microtime(true);
         }
         $this->response = new Response();
-        $this->request  = new Request();
+        $this->request = new Request();
     }
 
     /**
@@ -41,8 +41,8 @@ class App
     }
 
     /**
-     * @param string   $method HTTP method: GET, POST, PUT, PATCH, DELETE, OPTIONS, HEADER
-     * @param string   $route eg: /users/{id}
+     * @param string $method HTTP method: GET, POST, PUT, PATCH, DELETE, OPTIONS, HEADER
+     * @param string $route eg: /users/{id}
      * @param callable $callable
      *
      * @return $this
@@ -55,7 +55,7 @@ class App
     }
 
     /**
-     * @param string   $route
+     * @param string $route
      * @param callable $callable
      *
      * @return $this
@@ -68,7 +68,7 @@ class App
     }
 
     /**
-     * @param string   $route
+     * @param string $route
      * @param callable $callable
      *
      * @return $this
@@ -81,7 +81,7 @@ class App
     }
 
     /**
-     * @param string   $route
+     * @param string $route
      * @param callable $callable
      *
      * @return $this
@@ -94,7 +94,7 @@ class App
     }
 
     /**
-     * @param string   $route
+     * @param string $route
      * @param callable $callable
      *
      * @return $this
@@ -107,7 +107,7 @@ class App
     }
 
     /**
-     * @param string   $route
+     * @param string $route
      * @param callable $callable
      *
      * @return $this
@@ -181,7 +181,7 @@ class App
 
     protected function addMiddleware(callable $callable, $pattern)
     {
-        $next                        = $this->middleware($pattern);
+        $next = $this->middleware($pattern);
         $this->_middleware[$pattern] = function (Request $request, Response $response) use ($callable, $next) {
             $result = call_user_func($callable, $request, $response, $next);
             if (!$result instanceof Response) {
@@ -195,8 +195,8 @@ class App
     }
 
     /**
-     * @param  Request  $request A request object
-     * @param  Response $response A response object
+     * @param Request $request A request object
+     * @param Response $response A response object
      *
      * @return Response
      */
