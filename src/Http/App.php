@@ -126,7 +126,7 @@ class App
         foreach ($a[0] as $search) {
             $route = str_replace($search, $replace, $route);
         }
-        $route = str_replace('/', '\/', $route);
+        $route = str_replace(['/', '.'], ['\/', '\.'], $route);
 
         return '!^' . $route . $end . '!';
     }
