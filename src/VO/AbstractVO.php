@@ -13,7 +13,7 @@ abstract class AbstractVO implements ArrayAccess, Countable, JsonSerializable
         }
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         $array = [];
         foreach ($this as $k => $v) {
@@ -28,7 +28,7 @@ abstract class AbstractVO implements ArrayAccess, Countable, JsonSerializable
         return $array;
     }
 
-    public function toJson()
+    public function toJson(): bool|string
     {
         return json_encode($this->toArray());
     }
@@ -38,7 +38,7 @@ abstract class AbstractVO implements ArrayAccess, Countable, JsonSerializable
         return $this->toJson();
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if (null === $offset) {
             $offset = $this->count();
@@ -46,27 +46,27 @@ abstract class AbstractVO implements ArrayAccess, Countable, JsonSerializable
         $this->set($offset, $value);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->get($offset);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->$offset);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->$offset);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->toArray());
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
