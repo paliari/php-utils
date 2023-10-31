@@ -3,8 +3,9 @@
 namespace Paliari\Utils\VO;
 
 use ArrayAccess, Countable, JsonSerializable;
+use stdClass;
 
-abstract class AbstractVO implements ArrayAccess, Countable, JsonSerializable
+abstract class AbstractVO extends stdClass implements ArrayAccess, Countable, JsonSerializable
 {
     public function __construct($attributes = [])
     {
