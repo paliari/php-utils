@@ -1,8 +1,6 @@
-version: '3.7'
-
 services:
   cli:
-    image: paliari/apache-php56-oci8:1.0.3-dev
+    image: ${PHP_CLI_IMAGE:?defina PHP_CLI_IMAGE com a imagem paliari PHP 8.2+}
     volumes:
       - .:/var/www/html:cached
       - ~/.ssh:/root/.ssh
