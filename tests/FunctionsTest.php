@@ -1,18 +1,17 @@
 <?php
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class FunctionsTest extends TestCase
 {
 
-    /**
-     * @dataProvider wProvider
-     */
+    #[DataProvider('wProvider')]
     public function testW($input, $expected)
     {
         $this->assertEquals($expected, w($input));
     }
 
-    public function wProvider()
+    public static function wProvider()
     {
         return [
             ['abacaxi mamao melancia', ['abacaxi', 'mamao', 'melancia']],

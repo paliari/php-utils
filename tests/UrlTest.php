@@ -1,4 +1,5 @@
 <?php
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Paliari\Utils\Url;
 
@@ -9,9 +10,8 @@ class UrlTest extends TestCase
      * @param string $url
      * @param array  $expected
      * @param array  $query
-     *
-     * @dataProvider urlProvider
      */
+    #[DataProvider('urlProvider')]
     public function testMerge($url, $expected, $query = [])
     {
         $u = Url::parse($url);
@@ -21,7 +21,7 @@ class UrlTest extends TestCase
         $this->assertEquals($query, $u->queryToArray(), "Error query in $url");
     }
 
-    public function urlProvider()
+    public static function urlProvider()
     {
         return [
             [

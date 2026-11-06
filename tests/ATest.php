@@ -1,30 +1,25 @@
 <?php
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Paliari\Utils\A;
 
 class ATest extends TestCase
 {
 
-    /**
-     * @dataProvider mergeProvider
-     */
+    #[DataProvider('mergeProvider')]
     public function testMerge($a1, $a2, $expected)
     {
         $this->assertEquals($expected, A::merge($a1, $a2));
     }
 
-    /**
-     * @dataProvider deepKeyProvider
-     */
+    #[DataProvider('deepKeyProvider')]
     public function testDeepKey($array)
     {
         $this->assertEquals(3, A::deepKey($array, 'a.b.c'));
         $this->assertNull(A::deepKey($array, 'a.b.c.d'));
     }
 
-    /**
-     * @dataProvider arrayFlattenProvider
-     */
+    #[DataProvider('arrayFlattenProvider')]
     public function testArrayFlatten($array, $expected)
     {
         $this->assertEquals($expected, A::flatten($array));
@@ -32,7 +27,7 @@ class ATest extends TestCase
         $this->assertNotNull(A::flatten([]));
     }
 
-    public function mergeProvider()
+    public static function mergeProvider()
     {
         return [
             [['a' => '1'], ['b' => 2], ['a' => '1', 'b' => 2]],
@@ -41,12 +36,12 @@ class ATest extends TestCase
         ];
     }
 
-    public function deepKeyProvider()
+    public static function deepKeyProvider()
     {
         return [[['a' => ['b' => ['c' => 3]]], 3]];
     }
 
-    public function arrayFlattenProvider()
+    public static function arrayFlattenProvider()
     {
         return [[['a', 'b' => ['c' => ['d' => 3]], 'e'], ['a', 3, 'e']]];
     }
