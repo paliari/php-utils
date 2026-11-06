@@ -1,8 +1,17 @@
 # php-utils
 
+#### Requirements
+
+- PHP ^8.2 (tested on 8.2, 8.3 and 8.5). Use version `2.x` for PHP 8.0 and 8.1.
+
 #### Installation
 	
 	$ composer require paliari/php-utils
+
+#### Tests
+
+	$ composer install
+	$ composer test
 
 #### Usage
 
@@ -55,18 +64,19 @@ Array facades.
 ```
 
 ##### Logger
-Write log to file
+Write log to stdout.
 
 ```php
-    
-    // config custom file log, default is realpath(sys_get_temp_dir()) . '/php-util.log'
-    $file = __DIR__.'/tmp/logs/test.log';
-    \Paliari\Utils\Logger::file($file); 
     
     //Methods avaliables: "critical, error, warning, notice, info, debug".
     
     // info 
     \Paliari\Utils\Logger::info('Yor custom message.');
+    
+    // custom writer, receives ($machine, $level, $message, $scope)
+    \Paliari\Utils\Logger::setWriteCustom(function ($machine, $level, $message, $scope) {
+        file_put_contents(__DIR__ . '/tmp/logs/app.log', "$level - $message\n", FILE_APPEND);
+    });
     
 ```
 
@@ -83,6 +93,9 @@ Write log to file
     });
     
 ```
+
+The handler runs inside an output buffer callback: return the content instead of
+using `echo`/`print` (producing output from output handlers is deprecated since PHP 8.5).
 
 ##### Url
 Facade of url parse.

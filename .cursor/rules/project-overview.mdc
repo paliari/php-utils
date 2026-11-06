@@ -20,7 +20,10 @@ Biblioteca Composer pública (Packagist, MIT) com utilitários PHP sem dependên
 
 ## Compatibilidade
 
-- O código exige PHP >= 8.0 (usa `mixed`, union types como `bool|string`); `AbstractVO` estende `stdClass` para permitir propriedades dinâmicas no PHP 8.2+.
+- Exige PHP ^8.2 (`composer.json#require.php`) e é testado de 8.2 a 8.5; `AbstractVO` estende `stdClass` para permitir propriedades dinâmicas.
+- `config.platform.php` fica em `8.2.0` para o lock resolver dependências compatíveis com a versão mínima; não suba sem subir o `require.php`.
+- Código novo não pode gerar deprecation/warning/notice em nenhuma versão suportada (a suíte usa `failOnDeprecation`/`failOnWarning`). Cuidado com null em funções nativas (`(string)$x`), null como chave de array (`$key ?? ''`) e `++` em string não numérica.
+- Funções de PHP 8.3+ (ex.: `str_increment`) só com `function_exists` e fallback.
 - É uma biblioteca consumida por outros projetos: **não quebre a API pública** (métodos `public`/`protected`, assinaturas, funções globais) sem bump `major`.
 - Subclasses dos consumidores sobrescrevem métodos `protected` (ex.: `AbstractVO::set`, `App::routeToPattern`): trate-os também como API.
 - Não adicione dependências em `require` sem necessidade clara; prefira funções nativas do PHP.
