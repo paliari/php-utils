@@ -61,9 +61,9 @@ class Bump
 
     public function git()
     {
-        echo shell_exec("git add $this->file");
+        echo shell_exec('git add ' . escapeshellarg($this->file));
         echo shell_exec("git commit -m 'Bumps package version'");
-        echo shell_exec('git tag ' . $this->content['version']);
+        echo shell_exec('git tag ' . escapeshellarg($this->content['version']));
     }
 
     protected function major()
@@ -86,13 +86,38 @@ class Bump
 
     protected function prerelease()
     {
-        $this->prerelease++;
+        $this->prerelease = $this->incrementPrerelease($this->prerelease);
+    }
+
+    /**
+     * '' => 1, '1' => 2, 'beta' => 'betb'
+     *
+     * @param int|string $prerelease
+     *
+     * @return int|string
+     */
+    protected function incrementPrerelease($prerelease)
+    {
+        if ('' === $prerelease || null === $prerelease) {
+            return 1;
+        }
+        if (is_numeric($prerelease)) {
+            return (int)$prerelease + 1;
+        }
+        if (function_exists('str_increment') && preg_match('/^[a-zA-Z0-9]+$/', $prerelease)) {
+            return str_increment($prerelease);
+        }
+
+        return ++$prerelease;
     }
 
     protected function populateVersion($version)
     {
-        if ($ret = preg_match($this->format, $version, $matches)) {
-            list($all, $this->major, $this->minor, $this->patch, $this->prerelease) = $matches;
+        if ($ret = preg_match($this->format, (string)$version, $matches)) {
+            list($all, $major, $minor, $patch, $this->prerelease) = $matches;
+            $this->major = (int)$major;
+            $this->minor = (int)$minor;
+            $this->patch = (int)$patch;
         }
 
         return $ret;

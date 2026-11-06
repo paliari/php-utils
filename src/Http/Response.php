@@ -50,7 +50,9 @@ class Response
 
     protected function xTime()
     {
-        return round((microtime(true) - $GLOBALS['X-Time']) * 1000, 3);
+        $start = $GLOBALS['X-Time'] ?? $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(true);
+
+        return round((microtime(true) - $start) * 1000, 3);
     }
 
 }

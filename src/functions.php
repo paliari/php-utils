@@ -9,7 +9,7 @@
  */
 function w($str, $delimiter = ' ')
 {
-    return explode($delimiter, $str);
+    return explode($delimiter, (string)$str);
 }
 
 /**

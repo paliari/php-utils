@@ -8,8 +8,8 @@ foreach ($autoloadFiles as $autoloadFile) {
     }
 }
 $options = getopt('f:v:g', ['file:', 'version:', 'git']);
-$file    = @$options['file'] ?: @$options['f'];
-$version = @$options['version'] ?: @$options['v'];
+$file    = ($options['file'] ?? '') ?: ($options['f'] ?? '');
+$version = ($options['version'] ?? '') ?: ($options['v'] ?? '');
 $git     = array_key_exists('git', $options) || array_key_exists('g', $options);
 $bump    = new Bump($file);
 $version = $bump->version($version);

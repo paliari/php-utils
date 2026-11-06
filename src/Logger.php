@@ -23,6 +23,8 @@ class Logger
 
     protected static $write_custom;
 
+    protected static $stdout;
+
     protected static function machine()
     {
         return A::get($_SERVER, 'SERVER_ADDR', 'localhost');
@@ -67,9 +69,11 @@ class Logger
      */
     protected static function writeFile($content)
     {
-        $stdout = fopen('php://stdout', 'w');
+        if (!is_resource(static::$stdout)) {
+            static::$stdout = fopen('php://stdout', 'w');
+        }
 
-        return fwrite($stdout, $content);
+        return fwrite(static::$stdout, $content);
     }
 
     /**

@@ -37,7 +37,7 @@ class A
      */
     public static function deepKey(array $content, $key)
     {
-        $keys = explode('.', $key);
+        $keys = explode('.', (string)$key);
         foreach ($keys as $k) {
             $content = isset($content[$k]) ? $content[$k] : null;
         }
@@ -77,9 +77,8 @@ class A
      *                      Array of values to be used
      *                      </p>
      *
-     * @return array the combined array, false if the number of elements
-     * for each array isn't equal or if the arrays are empty.
-     * @since 5.0
+     * @return array the combined array.
+     * @throws \ValueError if the number of elements for each array isn't equal.
      */
     public static function combine($keys, $values)
     {
@@ -95,7 +94,7 @@ class A
      */
     public static function get($array, $key, $default = null)
     {
-        return isset($array[$key]) ? $array[$key] : $default;
+        return $array[$key ?? ''] ?? $default;
     }
 
     /**
@@ -107,7 +106,7 @@ class A
      */
     public static function setDeepKey(array &$array, $keys, $value)
     {
-        $keys    = explode('.', $keys);
+        $keys    = explode('.', (string)$keys);
         $current = &$array;
         foreach ($keys as $key) {
             $current = &$current[$key];

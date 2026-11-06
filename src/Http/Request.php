@@ -92,7 +92,7 @@ class Request
 
     protected function prepareHeaderKey($key)
     {
-        return str_replace(' ', '-', ucwords(strtr(strtolower($key), '_-', '  ')));
+        return str_replace(' ', '-', ucwords(strtr(strtolower((string)$key), '_-', '  ')));
     }
 
     /**
@@ -115,7 +115,7 @@ class Request
         if (!$headers) {
             $prefix = 'HTTP_';
             foreach ($_SERVER as $k => $v) {
-                if (0 === strpos($k, $prefix)) {
+                if (str_starts_with((string)$k, $prefix)) {
                     $k                                    = str_replace($prefix, '', $k);
                     $headers[$this->prepareHeaderKey($k)] = $v;
                 }

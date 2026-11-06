@@ -17,10 +17,26 @@ class CatchFatalError
             static::$handler = $handler;
         }
         ob_start(function ($output) {
-            $e = error_get_last();
-
-            return isset($e['type']) && E_ERROR == $e['type'] ? static::fatalErrorHandler($e) : $output;
+            return static::handleOutput($output, error_get_last());
         });
+    }
+
+    /**
+     * Output handlers must return a string; false keeps the original buffer.
+     *
+     * @param string     $output
+     * @param array|null $e
+     *
+     * @return string
+     */
+    protected static function handleOutput($output, $e)
+    {
+        if (!isset($e['type']) || E_ERROR != $e['type']) {
+            return $output;
+        }
+        $ret = static::fatalErrorHandler($e);
+
+        return false === $ret ? $output : (string)$ret;
     }
 
     /**

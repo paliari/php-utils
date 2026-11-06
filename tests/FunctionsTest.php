@@ -11,6 +11,16 @@ class FunctionsTest extends TestCase
         $this->assertEquals($expected, w($input));
     }
 
+    public function testWWithNull()
+    {
+        $this->assertSame([''], w(null));
+    }
+
+    public function testWWithDelimiter()
+    {
+        $this->assertSame(['a', 'b'], w('a,b', ','));
+    }
+
     public static function wProvider()
     {
         return [

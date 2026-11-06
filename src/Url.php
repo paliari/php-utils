@@ -72,7 +72,7 @@ class Url
     public function __construct($url)
     {
         $this->url = $url;
-        foreach (parse_url($url) as $k => $v) {
+        foreach (parse_url((string)$url) ?: [] as $k => $v) {
             $this->$k = $v;
         }
     }
@@ -85,7 +85,7 @@ class Url
     public function queryToArray()
     {
         $array = [];
-        parse_str($this->query, $array);
+        parse_str((string)$this->query, $array);
 
         return $array;
     }

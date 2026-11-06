@@ -34,9 +34,9 @@ abstract class AbstractVO extends stdClass implements ArrayAccess, Countable, Js
         return json_encode($this->toArray());
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->toJson();
+        return (string)$this->toJson();
     }
 
     public function offsetSet(mixed $offset, mixed $value): void
@@ -74,7 +74,7 @@ abstract class AbstractVO extends stdClass implements ArrayAccess, Countable, Js
 
     protected function get($name)
     {
-        return $this->$name;
+        return $this->$name ?? null;
     }
 
     protected function set($key, $value)

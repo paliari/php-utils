@@ -21,6 +21,24 @@ class UrlTest extends TestCase
         $this->assertEquals($query, $u->queryToArray(), "Error query in $url");
     }
 
+    public function testInvalidUrl()
+    {
+        $u = Url::parse('http:///x');
+        $this->assertSame('http:///x', $u->url);
+        $this->assertNull($u->scheme);
+        $this->assertNull($u->host);
+        $this->assertNull($u->path);
+        $this->assertSame([], $u->queryToArray());
+    }
+
+    public function testNullUrl()
+    {
+        $u = Url::parse(null);
+        $this->assertNull($u->url);
+        $this->assertSame('', $u->path);
+        $this->assertSame([], $u->queryToArray());
+    }
+
     public static function urlProvider()
     {
         return [
