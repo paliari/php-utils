@@ -1,0 +1,45 @@
+---
+description: Convenções de código PHP do pacote (estilo, nomes, docblocks, erros)
+globs: src/**/*.php,bin/**/*.php
+alwaysApply: false
+---
+
+# Convenções PHP
+
+## Estilo
+
+- PSR-12 em geral: 4 espaços, chaves de classe/método em nova linha, chaves de `if/foreach` na mesma linha.
+- Arrays curtos `[]`; strings simples com `'`, interpolação com `"$var"` / `"{$obj->prop}"`.
+- Linha em branco antes do `return` final de um método com mais de uma instrução.
+- Imports de classes globais via `use` no topo (`use Exception;`), nunca `\Exception` inline.
+
+## Nomes
+
+- Classes `PascalCase`, métodos `camelCase`, **variáveis, parâmetros e propriedades em `snake_case`** (`$allowed_keys`, `$composer_file`, `$first_row_column_names`).
+- Propriedades internas de cache/estado podem usar prefixo `_` (`$_instances`, `$_headers`, `$_payload`).
+- Classes abstratas com prefixo `Abstract` (`AbstractVO`, `AbstractSingleton`); VOs com sufixo `VO`.
+
+## Design
+
+- Prefira `protected` a `private` para manter as classes extensíveis por herança.
+- Use `static::` (late static binding) em vez de `self::` em métodos estáticos e `new static()` em factories.
+- Facades utilitárias são classes com métodos `public static` (padrão de `A`, `Logger`, `Url::parse`).
+- Acesse superglobais e arrays opcionais com `A::get($_SERVER, 'KEY', $default)` / `A::deepKey($arr, 'a.b')` em vez de `isset` repetido.
+- Funções globais novas só em `src/functions.php`, curtas e sem colisão com nomes nativos do PHP.
+
+## Tipos e docblocks
+
+- Código existente usa docblocks `@param`/`@return`/`@throws`; mantenha-os ao editar métodos.
+- Em código novo, adicione type hints nativos quando não quebrar subclasses existentes; ao mudar assinatura de método `public`/`protected` já existente, considere que isso é breaking change.
+
+## Erros
+
+- Lance exceções nativas (`Exception`, `DomainException`) com mensagem clara; não use `die`/`exit` em `src/`.
+- Não suprima erros com `@` em código novo de `src/`.
+
+```php
+// ❌
+$value = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+// ✅
+$value = A::get($_SERVER, 'REMOTE_ADDR', '');
+```

@@ -1,0 +1,36 @@
+---
+description: Visão geral do pacote paliari/php-utils, estrutura, compatibilidade e versionamento
+alwaysApply: true
+---
+
+# paliari/php-utils
+
+Biblioteca Composer pública (Packagist, MIT) com utilitários PHP sem dependências de runtime além de `ext-json`.
+
+## Estrutura
+
+- `src/` → namespace `Paliari\Utils\` (PSR-4)
+  - `A.php` facade de arrays (`merge`, `deepKey`, `setDeepKey`, `flatten`, `get`, `sanitize`...)
+  - `Url.php`, `Csv.php`, `Logger.php`, `CatchFatalError.php`, `AbstractSingleton.php`, `Bump.php`
+  - `Http/` micro-framework: `App` (rotas + middlewares), `Request`, `Response` (JSON por padrão)
+  - `VO/` value objects: `AbstractVO` (ArrayAccess, Countable, JsonSerializable), `ParamsVO`
+- `src/functions.php` → funções globais (`w`, `microSeconds`), carregadas via `autoload.files`
+- `bin/bump` + `bin/bump.php` → CLI que incrementa `version` no `composer.json` (expostos em `composer.json#bin`)
+- `tests/` → PHPUnit, um `*Test.php` por classe
+
+## Compatibilidade
+
+- O código exige PHP >= 8.0 (usa `mixed`, union types como `bool|string`); `AbstractVO` estende `stdClass` para permitir propriedades dinâmicas no PHP 8.2+.
+- É uma biblioteca consumida por outros projetos: **não quebre a API pública** (métodos `public`/`protected`, assinaturas, funções globais) sem bump `major`.
+- Subclasses dos consumidores sobrescrevem métodos `protected` (ex.: `AbstractVO::set`, `App::routeToPattern`): trate-os também como API.
+- Não adicione dependências em `require` sem necessidade clara; prefira funções nativas do PHP.
+
+## Versionamento e release
+
+- SemVer. A versão fica em `composer.json#version` e é alterada só pelo `bin/bump` (`-v major|minor|patch|prerelease` ou versão explícita, `-g` faz commit + tag).
+- Não edite `version` manualmente em commits de feature/fix; o bump é um commit separado.
+- Commits seguem conventional commits (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`).
+
+## Documentação
+
+- Ao adicionar ou alterar comportamento público, atualize o `README.md` com um exemplo de uso no mesmo formato das seções existentes.

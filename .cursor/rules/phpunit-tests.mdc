@@ -1,0 +1,39 @@
+---
+description: Convenções de testes PHPUnit do pacote
+globs: tests/**/*.php
+alwaysApply: false
+---
+
+# Testes (PHPUnit)
+
+- Um arquivo por classe/arquivo testado: `tests/<Classe>Test.php` (ex.: `ATest`, `UrlTest`, `FunctionsTest` para `src/functions.php`).
+- Classes de teste sem namespace, estendendo `PHPUnit\Framework\TestCase`; bootstrap é `vendor/autoload.php` (ver `phpunit.xml`).
+- Métodos `test<Comportamento>` em camelCase.
+- Prefira data providers para casos tabulares, nomeados `<algo>Provider`, declarados como `public static function` (exigido no PHPUnit 10+ e compatível com versões anteriores).
+- Use mensagens de falha nas asserções quando iterar sobre vários campos, como em `UrlTest`.
+- `phpunit.xml` é estrito: todo teste precisa ter asserção e não pode gerar output.
+- Todo método público novo ou alterado em `src/` deve ganhar teste correspondente.
+
+```php
+/**
+ * @dataProvider mergeProvider
+ */
+public function testMerge($a1, $a2, $expected)
+{
+    $this->assertEquals($expected, A::merge($a1, $a2));
+}
+
+public static function mergeProvider()
+{
+    return [
+        [['a' => 1], ['b' => 2], ['a' => 1, 'b' => 2]],
+    ];
+}
+```
+
+## Rodando
+
+```bash
+composer install
+vendor/bin/phpunit
+```
